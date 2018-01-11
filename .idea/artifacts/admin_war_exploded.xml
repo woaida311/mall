@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="admin:war exploded">
+    <output-path>$PROJECT_DIR$/admin/target/admin</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="admin" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:4.3.13.RELEASE" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="admin/web/Web" />
+    </root>
+  </artifact>
+</component>

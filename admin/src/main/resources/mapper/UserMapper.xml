@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.ssm.dao.UserMapper">
+<select id="query" parameterType="map" resultType="user">
+    SELECT * FROM user WHERE 1=1
+    <if test="userName != null">
+        AND userName LIKE concat('%',#{userName},'%')
+    </if>
+    <if test="realName != null">
+        AND realName LIKE concat('%',#{realName},'%')
+    </if>
+    <if test="valid != null">
+        AND valid = #{valid}
+    </if>
+    <if test="rows != null &amp;&amp; start != null">
+        LIMIT #{start},#{rows}
+    </if>
+</select>
+    <select id="getCount" parameterType="map" resultType="int">
+        SELECT count(dbid) FROM user WHERE 1 = 1
+        <if test="userName != null">
+            AND userName LIKE concat('%',#{userName},'%')
+        </if>
+        <if test="roleCode != null">
+            AND user.realName LIKE concat('%',#{realName},'%')
+        </if>
+        <if test="valid != null">
+            AND valid = #{valid}
+        </if>
+    </select>
+    <insert id="doInsert" parameterType="user">
+        INSERT INTO user (userName,password,realName,valid)VALUES (
+        #{userName},#{password},#{realName},#{valid}
+        )
+    </insert>
+    <update id="doUpdate" parameterType="user">
+        UPDATE user SET userName = #{userName},
+            password = #{password},realName = #{realName},
+            valid = #{valid} WHERE dbid = #{dbid}
+    </update>
+<delete id="delete" parameterType="int">
+    DELETE FROM user_role WHERE userId = #{userId}
+</delete>
+    <insert id="insertRole" parameterType="list">
+        INSERT INTO user_role (userId, roleId) VALUES
+            <foreach collection="list" item="row" separator=",">
+                (#{row.userId},#{row.roleId})
+            </foreach>
+    </insert>
+    <select id="queryValidRole" resultType="map">
+        SELECT roleName,roleCode,dbid FROM role WHERE valid = 1
+    </select>
+    <select id="getRoles" parameterType="int" resultType="int">
+        SELECT roleId
+        FROM user,user_role,role
+        WHERE user_role.userId = user.dbid
+        AND user_role.roleId = role.dbid
+        AND user.dbid = #{userId}
+    </select>
+    <select id="doLogin" parameterType="map" resultType="user">
+        SELECT * FROM user WHERE userName = #{userName} AND password = #{password}
+    </select>
+    <select id="queryAuthByUserId" parameterType="int" resultType="auth">
+        SELECT *,dbid id,authName text FROM auth WHERE layer !=0 AND type = 1 AND dbid IN (SELECT authId FROM role_auth WHERE roleId IN (SELECT roleId FROM user_role WHERE userId = #{userid}))
+    </select>
+    <select id="queryAuth2ByUserId" parameterType="int" resultType="auth">
+        SELECT *,dbid id,authName text FROM auth WHERE layer !=0  AND dbid IN (SELECT authId FROM role_auth WHERE roleId IN (SELECT roleId FROM user_role WHERE userId = #{userid}))
+    </select>
+    <update id="resetPassword" parameterType="user">
+        UPDATE user SET password = #{password} WHERE dbid = #{dbid}
+    </update>
+</mapper>

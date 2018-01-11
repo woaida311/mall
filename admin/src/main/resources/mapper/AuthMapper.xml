@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.ssm.dao.AuthMapper">
+    <resultMap id="queryByDbidResultMap" type="auth">
+        <id column="dbid" property="dbid"/>
+        <!--
+        select:需要递归执行的SQL
+        column：递归执行的sql所需要的参数
+        -->
+        <collection property="children" ofType="auth" select="queryByDbid" column="dbid"/>
+    </resultMap>
+    <select id="queryByDbid" parameterType="int" resultMap="queryByDbidResultMap">
+        SELECT * FROM auth WHERE parentId = #{dbid}
+    </select>
+
+    <resultMap id="queryNameByDbidResultMap" type="map">
+        <id column="id" property="id"/>
+        <collection property="children" ofType="map" select="queryNameByDbid" column="id"/>
+    </resultMap>
+    <select id="queryNameByDbid" parameterType="int" resultMap="queryNameByDbidResultMap">
+        SELECT dbid id,authName text FROM auth WHERE parentId = #{dbid} AND valid = 1
+    </select>
+    <update id="doUpdate" parameterType="auth">
+        UPDATE auth SET authName=#{authName},authCode=#{authCode},authURL=#{authURL},
+            type=#{type},parentId=#{parentId},orders=#{orders},valid=#{valid},layer=#{layer}
+        WHERE dbid=#{dbid}
+    </update>
+    <insert id="doInsert" parameterType="auth">
+        INSERT INTO auth (authName, authCode, authURL, type, parentId, orders, valid, layer)VALUES (
+           #{authName},#{authCode},#{authURL},
+            #{type},#{parentId},#{orders},#{valid},#{layer}
+        )
+    </insert>
+    <select id="queryByRoleId" parameterType="int" resultType="int">
+        SELECT auth.dbid
+        FROM auth,role,role_auth
+        WHERE role_auth.roleId = role.dbid
+              AND role_auth.authId = auth.dbid
+              AND role.dbid = #{dbid}
+    </select>
+</mapper>

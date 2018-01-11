@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.ssm.dao.OrderMapper">
+    <!--
+                使用id和result来映射数据库中的字段到POJO的属性
+                    - id标签指的是实体的唯一标识
+                    - result标签指的是普通字段
+                column&property
+                    - column指的是数据库中的字段名
+                    - property指的是POJO中的属性名
+
+            -->
+    <resultMap id="queryByIdResultMap" type="orders">
+        <id column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <!--复杂类型使用association完成映射-->
+        <association property="user" javaType="user">
+            <id column="uid" property="uid"/>
+            <result column="name" property="name"/>
+            <result column="password" property="password"/>
+            <result column="email" property="email"/>
+            <result column="gender" property="gender"/>
+            <result column="birth" property="birth"/>
+        </association>
+        <!--
+            ofType：集合中元素的数据类型
+        -->
+        <collection property="products" ofType="product">
+            <id column="product_id" property="id"/>
+            <result column="product_name" property="name"/>
+            <result column="price" property="price"/>
+            <result column="quantity" property="quantity"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryById" parameterType="int" resultMap="queryByIdResultMap">
+        SELECT
+            orders.*,
+            user.*,
+            order_detail.*,
+            product.id product_id,product.name product_name,product.price
+        FROM orders,user,order_detail,product
+        WHERE orders.user_id = user.uid
+              AND order_detail.order_id = orders.id
+              AND product.id = order_detail.product_id
+              AND orders.id = #{id}
+    </select>
+
+    <resultMap id="queryByUidResultMap" type="userOrder">
+        <id column="uid" property="uid"/>
+        <result column="name" property="name"/>
+        <result column="password" property="password"/>
+        <result column="gender" property="gender"/>
+        <result column="email" property="email"/>
+        <result column="birth" property="birth"/>
+        <collection property="orders" ofType="orders">
+            <id column="order_id" property="id"/>
+            <result column="create_time" property="createTime"/>
+            <collection property="products" ofType="product">
+                <id column="product_id" property="id"/>
+                <result column="product_name" property="name"/>
+                <result column="price" property="price"/>
+                <result column="quantity" property="quantity"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="queryByUid" parameterType="int" resultMap="queryByUidResultMap">
+        SELECT user.*,orders.*,order_detail.*,
+            product.name product_name,product.price
+        FROM user,orders,order_detail,product
+        WHERE
+            orders.user_id = user.uid
+            AND order_detail.order_id = orders.id
+            AND product.id = order_detail.product_id
+            AND uid = #{uid}
+    </select>
+
+</mapper>
