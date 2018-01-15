@@ -15,7 +15,6 @@ public int queryMemberName(String name);
     //登录
     public Member login(Map<String,String> memberMap);
 
-
     //修改密码
     public int updateMemberPassword(Member member);
 }

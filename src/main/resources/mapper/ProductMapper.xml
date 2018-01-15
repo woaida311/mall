@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.ssm.dao.ProductMapper">
+
+    <resultMap id="productMap" type="product">
+        <id property="id" column="pid"/>
+        <result property="name" column="pname"/>
+        <result property="comments" column="comments"/>
+        <result property="price" column="price"/>
+        <result property="stock" column="stock"/>
+        <result property="src_img" column="src_img"/>
+        <association property="category" javaType="category">
+            <id property="id" column="cid"/>
+            <result property="name" column="cname"/>
+        </association>
+        <association property="brand" javaType="brand">
+            <id property="id" column="bid"/>
+            <result property="name" column="bname"/>
+        </association>
+    </resultMap>
+
+    <select id="query" parameterType="map" resultMap="productMap">
+        SELECT
+        shop_product.id pid,
+        shop_category.id cid,
+        shop_category.name          cname,
+        shop_brand.id bid,
+        shop_brand.name             bname,
+        shop_product.name pname,
+        comments,
+        price,
+        stock,
+        src_img
+        FROM shop_product
+        JOIN shop_category ON shop_product.cid = shop_category.id
+        JOIN shop_brand ON shop_product.bid = shop_brand.id
+        WHERE 1 = 1
+        <if test="cid != null">
+            AND shop_product.cid = #{cid}
+        </if>
+        <if test="bid != null">
+            AND shop_product.bid = #{bid}
+        </if>
+        <if test="keyWord != null">
+            AND (shop_product.name LIKE CONCAT('%',#{keyWord},'%')
+            OR shop_product.comments LIKE CONCAT('%',#{keyWord},'%'))
+        </if>
+        ORDER BY price
+        <if test="start != null &amp;&amp; pageSize != null">
+            LIMIT #{start},#{pageSize}
+        </if>
+    </select>
+<select id="queryByPid" parameterType="int" resultType="product">
+    SELECT id,name,price,stock,comments,src_img FROM shop_product WHERE id = #{id}
+</select>
+
+
+</mapper>

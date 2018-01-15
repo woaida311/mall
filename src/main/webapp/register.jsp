@@ -76,12 +76,12 @@
 <body>
 
 <div class="login-boxtitle">
-    <a href="home/demo.html"><img alt="" src="static/img/logobig.png" /></a>
+    <a href="#"><img alt="" src="static/images/logobig.png" /></a>
 </div>
 
 <div class="res-banner">
     <div class="res-main">
-        <div class="login-banner-bg"><span></span><img src="static/img/big.jpg" /></div>
+        <div class="login-banner-bg"><span></span><img src="static/images/big.jpg" /></div>
         <div class="login-box">
 
             <div class="am-tabs" id="doc-my-tabs">
@@ -97,7 +97,7 @@
                             </div>
                             <div class="verification">
                                 <label for="code"><i class="am-icon-code-fork"></i></label>
-                                <input type="text" name="username" id="code" placeholder="请输入用户名"/>
+                                <input type="text" name="name" id="code" placeholder="请输入用户名"/>
                             </div>
                             <div class="user-pass">
                                 <label for="password"><i class="am-icon-lock"></i></label>
@@ -105,7 +105,7 @@
                             </div>
                             <div class="user-pass">
                                 <label for="passwordRepeat"><i class="am-icon-lock"></i></label>
-                                <input type="password" name="pay_password" id="passwordRepeat" placeholder="设置支付密码"/>
+                                <input type="text" name="email" id="passwordRepeat" placeholder="设置邮箱"/>
                             </div>
                             <div class="am-cf">
                                 <input type="submit" value="注册" class="am-btn am-btn-primary am-btn-sm am-fl">

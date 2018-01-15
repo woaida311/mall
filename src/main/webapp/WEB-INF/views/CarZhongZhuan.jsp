@@ -9,7 +9,7 @@
 
     <title>商品已成功加入购物车</title>
 
-    <link href="static/css/amazeui.css" rel="stylesheet" type="text/css" />
+    <link href="../static/css/amazeui.css" rel="stylesheet" type="text/css" />
     <link href="static/css/demo.css" rel="stylesheet" type="text/css" />
     <link href="static/css/cartstyle.css" rel="stylesheet" type="text/css" />
     <link href="static/css/optstyle.css" rel="stylesheet" type="text/css" />

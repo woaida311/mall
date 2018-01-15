@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.hwua.ssm.dao.AddressMapper">
+    <!--查询所有收货地址-->
+    <select id="queryAll" parameterType="int" resultType="address">
+        SELECT * FROM shop_address WHERE mid = #{mid}
+    </select>
+    <!--添加收货地址-->
+<insert id="addAddress" parameterType="address">
+    INSERT INTO shop_address (addr, name, tel, mid) VALUES (#{addr}
+    ,#{name},#{tel},#{mid})
+</insert>
+    <!--删除收货地址-->
+    <delete id="delAddress" parameterType="int">
+        DELETE FROM shop_address WHERE id = #{id}
+    </delete>
+    <!--地址计数-->
+    <select id="getCount" parameterType="int" resultType="int">
+        SELECT count(id) FROM shop_address WHERE mid = #{mid}
+    </select>
+    <!--查询默认地址-->
+    <select id="showAddress" parameterType="int" resultType="address">
+        SELECT * FROM shop_address WHERE mid = #{mid} AND status = 1
+    </select>
+    <!--将默认地址修改为非默认-->
+    <update id="updateAddressTo0" parameterType="int">
+        UPDATE shop_address SET status = 0 WHERE mid = #{mid} AND status = 1
+    </update>
+    <!--修改为默认地址-->
+    <update id="updateAddressTo1" parameterType="map">
+        UPDATE shop_address SET status = 1 WHERE id = #{id} AND mid = #{mid}
+    </update>
+</mapper>

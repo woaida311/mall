@@ -1,7 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.hwua.shop.biz.impl.GoodsBizImpl" %>
+<%--<%@ page import="com.hwua.shop.biz.impl.GoodsBizImpl" %>--%>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.hwua.ssm.po.Member" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -31,15 +32,15 @@
             <div class="topMessage">
                 <div class="menu-hd">
                     <%
-                        String username = (String)session.getAttribute("username");
-                        if(username==null){
+                        Member member = (Member) session.getAttribute("member");
+                        if(member==null){
                     %>
                     <a href="login.jsp" target="_top" class="h">亲，请登录</a>
                     <a href="register.jsp" target="_top">免费注册</a>
                     <%
                         }else{
                     %>
-                    <a href="#" target="_top" class="h">欢迎<%=username%></a>
+                    <a href="#" target="_top" class="h">欢迎<%=member.getName()%></a>
                     <a href="loginout" target="_top">注销</a>
                     <%
                         }
@@ -68,9 +69,9 @@
     <!--悬浮搜索框-->
 
     <div class="nav white">
-        <div class="logo"><img src="static/img/logo.png" /></div>
+        <div class="logo"><img src="static/images/logo.png" /></div>
         <div class="logoBig">
-            <li><img src="static/img/logobig.png" /></li>
+            <li><img src="static/images/logobig.png" /></li>
         </div>
 
         <div class="search-bar pr">
@@ -90,10 +91,10 @@
     <!--轮播 -->
     <div class="am-slider am-slider-default scoll" data-am-flexslider id="demo-slider-0">
         <ul class="am-slides">
-            <li class="banner1"><a href="goods?goodsId=1"><img src="static/img/ad1.jpg" /></a></li>
-            <li class="banner2"><a href="goods?goodsId=2"><img src="static/img/ad2.jpg" /></a></li>
-            <li class="banner3"><a href="goods?goodsId=3"><img src="static/img/ad3.jpg" /></a></li>
-            <li class="banner4"><a href="goods?goodsId=4"><img src="static/img/ad4.jpg" /></a></li>
+            <li class="banner1"><a href="goods?goodsId=1"><img src="static/images/ad1.jpg" /></a></li>
+            <li class="banner2"><a href="goods?goodsId=2"><img src="static/images/ad2.jpg" /></a></li>
+            <li class="banner3"><a href="goods?goodsId=3"><img src="static/images/ad3.jpg" /></a></li>
+            <li class="banner4"><a href="goods?goodsId=4"><img src="static/images/ad4.jpg" /></a></li>
 
         </ul>
     </div>
@@ -125,10 +126,10 @@
 
                     <div class="category">
                         <ul class="category-list" id="js_climit_li">
-                            <c:forEach items="${requestScope.brandgoods}" var="bg">
+                            <c:forEach items="${applicationScope.cbs}" var="cb">
                             <li class="appliance js_toggle relative first">
                                 <div class="category-info">
-                                    <h3 class="category-name b-category-name"><i><img src="static/img/cake.png"></i><a class="ml-22" title="点心">${bg.brand.name}</a></h3>
+                                    <h3 class="category-name b-category-name"><i><img src="static/images/cake.png"></i><a href="showByCid?cid=${cb.id}" class="ml-22" title="点心">${cb.name}</a></h3>
                                     <em>&gt;</em></div>
                                 <div class="menu-item menu-in top">
                                     <div class="area-in">
@@ -136,9 +137,9 @@
                                             <div class="menu-srot">
                                                 <div class="sort-side">
                                                     <dl class="dl-sort">
-                                                        <dt><span title="${bg.brand.name}">${bg.brand.name}</span></dt>
-                                                        <c:forEach  items="${bg.goods}" var="good">
-                                                            <dd><a title="${good.name}" href="goods?goodsId=${good.id}"><span>${good.name}</span></a></dd>
+                                                        <dt><a href="showByCid?cid=${cb.id}"><span title="${cb.name}">${cb.name}</span></a></dt>
+                                                        <c:forEach  items="${cb.brands}" var="brand">
+                                                            <dd><a href="" title="${brand.name}"><span>${brand.name}</span></a></dd>
                                                         </c:forEach>
                                                     </dl>
                                             </div>
@@ -175,22 +176,22 @@
         <!--小导航 -->
         <div class="am-g am-g-fixed smallnav">
             <div class="am-u-sm-3">
-                <a href="sort.html"><img src="static/img/navsmall.jpg" />
+                <a href="sort.html"><img src="static/images/navsmall.jpg" />
                     <div class="title">商品分类</div>
                 </a>
             </div>
             <div class="am-u-sm-3">
-                <a href="#"><img src="static/img/huismall.jpg" />
+                <a href="#"><img src="static/images/huismall.jpg" />
                     <div class="title">大聚惠</div>
                 </a>
             </div>
             <div class="am-u-sm-3">
-                <a href="#"><img src="static/img/mansmall.jpg" />
+                <a href="#"><img src="static/images/mansmall.jpg" />
                     <div class="title">个人中心</div>
                 </a>
             </div>
             <div class="am-u-sm-3">
-                <a href="#"><img src="static/img/moneysmall.jpg" />
+                <a href="#"><img src="static/images/moneysmall.jpg" />
                     <div class="title">投资理财</div>
                 </a>
             </div>
@@ -203,7 +204,7 @@
             <div class="demo">
                     <div class="mod-vip">
                         <div class="m-baseinfo">
-                                <img src="static/img/getAvatar.do.jpg">
+                                <img src="static/images/getAvatar.do.jpg">
                             </a>
                         </div>
                         <div class="member-logout">
@@ -219,7 +220,7 @@
                         <div class="clear"></div>
                     </div>
                 </ul>
-                <div class="advTip"><img src="static/img/advTip.jpg"/></div>
+                <div class="advTip"><img src="static/images/advTip.jpg"/></div>
             </div>
         </div>
         <div class="clear"></div>
@@ -248,7 +249,7 @@
 
         <div class="am-g am-g-fixed recommendation">
             <div class="clock am-u-sm-3" ">
-            <img src="static/img/2016.png "></img>
+            <img src="static/images/2016.png "></img>
             <p>今日<br>推荐</p>
         </div>
         <div class="am-u-sm-4 am-u-lg-3 ">
@@ -257,7 +258,7 @@
                 <h4>开年福利篇</h4>
             </div>
             <div class="recommendationMain ">
-                <img src="static/img/tj.png "></img>
+                <img src="static/images/tj.png "></img>
             </div>
         </div>
         <div class="am-u-sm-4 am-u-lg-3 ">
@@ -266,7 +267,7 @@
                 <h4>让爱早回家</h4>
             </div>
             <div class="recommendationMain ">
-                <img src="static/img/tj1.png "></img>
+                <img src="static/images/tj1.png "></img>
             </div>
         </div>
         <div class="am-u-sm-4 am-u-lg-3 ">
@@ -275,7 +276,7 @@
                 <h4>甜甜蜜蜜</h4>
             </div>
             <div class="recommendationMain ">
-                <img src="static/img/tj2.png "></img>
+                <img src="static/images/tj2.png "></img>
             </div>
         </div>
 
@@ -297,7 +298,7 @@
                 <div class="icon-sale one "></div>
                 <h4>秒杀</h4>
                 <div class="activityMain ">
-                    <img src="static/img/activity1.jpg "></img>
+                    <img src="static/images/activity1.jpg "></img>
                 </div>
                 <div class="info ">
                     <h3>春节送礼优选</h3>
@@ -308,7 +309,7 @@
                 <div class="icon-sale two "></div>
                 <h4>特惠</h4>
                 <div class="activityMain ">
-                    <img src="static/img/activity2.jpg "></img>
+                    <img src="static/images/activity2.jpg "></img>
                 </div>
                 <div class="info ">
                     <h3>春节送礼优选</h3>
@@ -319,7 +320,7 @@
                 <div class="icon-sale three "></div>
                 <h4>团购</h4>
                 <div class="activityMain ">
-                    <img src="static/img/activity3.jpg "></img>
+                    <img src="static/images/activity3.jpg "></img>
                 </div>
                 <div class="info ">
                     <h3>春节送礼优选</h3>
@@ -330,7 +331,7 @@
                 <div class="icon-sale "></div>
                 <h4>超值</h4>
                 <div class="activityMain ">
-                    <img src="static/img/activity.jpg "></img>
+                    <img src="static/images/activity.jpg "></img>
                 </div>
                 <div class="info ">
                     <h3>春节送礼优选</h3>
@@ -361,7 +362,7 @@
                         当小鱼儿恋上软豆腐
                     </div>
                 </div>
-                <img src="static/img/act1.png " />
+                <img src="static/images/act1.png " />
             </a>
         </div>
         <div class="am-u-sm-7 am-u-md-5 am-u-lg-4">
@@ -375,7 +376,7 @@
                     </div>
 
                 </div>
-                <a href="# "><img src="static/img/act2.png " /></a>
+                <a href="# "><img src="static/images/act2.png " /></a>
             </div>
             <div class="text-two last">
                 <div class="outer-con ">
@@ -387,7 +388,7 @@
                     </div>
 
                 </div>
-                <a href="# "><img src="static/img/act2.png " /></a>
+                <a href="# "><img src="static/images/act2.png " /></a>
             </div>
         </div>
         <div class="am-u-sm-12 am-u-md-4 ">
@@ -401,7 +402,7 @@
                         尝鲜价：¥4.8
                     </div>
                 </div>
-                <a href="# "><img src="static/img/act3.png " /></a>
+                <a href="# "><img src="static/images/act3.png " /></a>
             </div>
 
             <div class="am-u-sm-3 am-u-md-6 text-three">
@@ -414,7 +415,7 @@
                         尝鲜价：¥4.8
                     </div>
                 </div>
-                <a href="# "><img src="static/img/act3.png " /></a>
+                <a href="# "><img src="static/images/act3.png " /></a>
             </div>
 
             <div class="am-u-sm-3 am-u-md-6 text-three">
@@ -427,7 +428,7 @@
                         尝鲜价：¥4.8
                     </div>
                 </div>
-                <a href="# "><img src="static/img/act3.png " /></a>
+                <a href="# "><img src="static/images/act3.png " /></a>
             </div>
 
             <div class="am-u-sm-3 am-u-md-6 text-three last ">
@@ -440,7 +441,7 @@
                         尝鲜价：¥4.8
                     </div>
                 </div>
-                <a href="# "><img src="static/img/act3.png " /></a>
+                <a href="# "><img src="static/images/act3.png " /></a>
             </div>
         </div>
 
@@ -458,7 +459,7 @@
 
         <div class="am-u-sm-5 am-u-md-4 text-one ">
             <a href="# ">
-                <img src="static/img/act1.png " />
+                <img src="static/images/act1.png " />
                 <div class="outer-con ">
                     <div class="title ">
                         零食大礼包开抢啦
@@ -480,7 +481,7 @@
                     仅售：¥13.8
                 </div>
             </div>
-            <a href="# "><img src="static/img/5.jpg " /></a>
+            <a href="# "><img src="static/images/5.jpg " /></a>
         </div>
 
         <div class="am-u-md-4 am-u-lg-2 text-three">
@@ -493,7 +494,7 @@
                     尝鲜价：¥4.8
                 </div>
             </div>
-            <a href="# "><img src="static/img/act3.png " /></a>
+            <a href="# "><img src="static/images/act3.png " /></a>
         </div>
         <div class="am-u-md-4 am-u-lg-2 text-three">
             <div class="outer-con ">
@@ -505,7 +506,7 @@
                     尝鲜价：¥4.8
                 </div>
             </div>
-            <a href="# "><img src="static/img/act3.png " /></a>
+            <a href="# "><img src="static/images/act3.png " /></a>
         </div>
         <div class="am-u-sm-6 am-u-md-4 am-u-lg-2 text-two ">
             <div class="outer-con ">
@@ -517,7 +518,7 @@
                     仅售：¥13.8
                 </div>
             </div>
-            <a href="# "><img src="static/img/5.jpg " /></a>
+            <a href="# "><img src="static/images/5.jpg " /></a>
         </div>
         <div class="am-u-sm-6 am-u-md-3 am-u-lg-2 text-four ">
             <div class="outer-con ">
@@ -529,7 +530,7 @@
                     仅售：¥13.8
                 </div>
             </div>
-            <a href="# "><img src="static/img/5.jpg " /></a>
+            <a href="# "><img src="static/images/5.jpg " /></a>
         </div>
         <div class="am-u-sm-4 am-u-md-3 am-u-lg-4 text-five">
             <div class="outer-con ">
@@ -541,7 +542,7 @@
                 </div>
 
             </div>
-            <a href="# "><img src="static/img/act2.png " /></a>
+            <a href="# "><img src="static/images/act2.png " /></a>
         </div>
         <div class="am-u-sm-4 am-u-md-3 am-u-lg-2 text-six">
             <div class="outer-con ">
@@ -553,7 +554,7 @@
                     尝鲜价：¥4.8
                 </div>
             </div>
-            <a href="# "><img src="static/img/act3.png " /></a>
+            <a href="# "><img src="static/images/act3.png " /></a>
         </div>
         <div class="am-u-sm-4 am-u-md-3 am-u-lg-4 text-five">
             <div class="outer-con ">
@@ -565,7 +566,7 @@
                 </div>
 
             </div>
-            <a href="# "><img src="static/img/act2.png " /></a>
+            <a href="# "><img src="static/images/act2.png " /></a>
         </div>
     </div>
 
@@ -630,17 +631,17 @@
                 </a>
                 <div class="ibar_login_box status_login ">
                     <div class="avatar_box ">
-                        <p class="avatar_imgbox "><img src="static/img/no-img_mid_.jpg " /></p>
+                        <p class="avatar_imgbox "><img src="static/images/no-img_mid_.jpg " /></p>
                         <ul class="user_info ">
                             <%
-                            if(username==null){
+                            if(member==null){
                             %>
                             <li>用户名：游客</li>
                             <li>级&nbsp;别：游客</li>
                             <%
                             }else {
                             %>
-                            <li>用户名：<%=username%></li>
+                            <li>用户名：<%=member.getName()%></li>
                             <li>级&nbsp;别：普通会员</li>
                             <%
                             }
@@ -697,7 +698,7 @@
 
             <div id="brand " class="item ">
                 <a href="shoucang.jsp">
-                    <span class="wdsc "><img src="static/img/wdsc.png " /></span>
+                    <span class="wdsc "><img src="static/images/wdsc.png " /></span>
                 </a>
                 <div class="mp_tooltip ">
                     我的收藏
@@ -712,7 +713,7 @@
                 <!--二维码 -->
                 <li class="qtitem ">
                     <a href="#none "><span class="mpbtn_qrcode "></span></a>
-                    <div class="mp_qrcode " style="display:none; "><img src="static/img/weixin_code_145.png " /><i class="icon_arrow_white "></i></div>
+                    <div class="mp_qrcode " style="display:none; "><img src="static/images/weixin_code_145.png " /><i class="icon_arrow_white "></i></div>
                 </li>
                 <li class="qtitem ">
                     <a href="#top " class="return_top "><span class="top "></span></a>

@@ -17,19 +17,19 @@
 
 <body>
 <div class="login-boxtitle">
-    <a href="home.jsp"><img alt="logo" src="static/img/logobig.png" /></a>
+    <a href="home.jsp"><img alt="logo" src="static/images/logobig.png" /></a>
 </div>
 <div class="login-banner">
     <div class="login-main">
-        <div class="login-banner-bg"><span></span><img src="static/img/big.jpg" /></div>
+        <div class="login-banner-bg"><span></span><img src="static/images/big.jpg" /></div>
         <div class="login-box">
             <h3 class="title">登录商城</h3>
             <div class="clear"></div>
             <div class="login-form">
                 <form action="login" method="post">
                     <div class="user-name">
-                        <label for="user"><i class="am-icon-user"></i></label>
-                        <input type="text" name="username" id="user" placeholder="用户名">
+                        <label for="member"><i class="am-icon-user"></i></label>
+                        <input type="text" name="name" id="member" placeholder="用户名">
                     </div>
                     <div class="user-pass">
                         <label for="password"><i class="am-icon-lock"></i></label>

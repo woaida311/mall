@@ -13,8 +13,8 @@
     </select>
     <!--用户注册-->
     <update id="register" parameterType="member">
-        INSERT INTO shop_member (realName, name, password, tel, email)
-        VALUES(#{realName},#{name},#{password},#{tel},#{email})
+        INSERT INTO shop_member  (name, password, tel, email)
+        VALUES(#{name},#{password},#{tel},#{email})
     </update>
     <!--会员登录-->
     <select id="doLogin" parameterType="map" resultType="member">

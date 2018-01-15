@@ -2,8 +2,13 @@ package com.hwua.ssm.test;
 
         import com.alibaba.fastjson.JSON;
 
+        import com.hwua.ssm.dao.AddressMapper;
         import com.hwua.ssm.dao.MemberMapper;
+        import com.hwua.ssm.po.Address;
         import com.hwua.ssm.po.Member;
+        import com.hwua.ssm.po.Product;
+        import com.hwua.ssm.service.AddressService;
+        import com.hwua.ssm.service.ProductService;
         import org.junit.Test;
         import org.springframework.context.ApplicationContext;
         import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -12,9 +17,10 @@ package com.hwua.ssm.test;
         import java.util.HashMap;
         import java.util.List;
         import java.util.Map;
+        import java.util.Set;
 
 public class TestMD5 {
-
+//private AddressService addressService;
     @Test
     public void testMD5(){
         //密码加密：MD5，MD5是不可逆的加密方式
@@ -75,4 +81,54 @@ public class TestMD5 {
        int i = memberMapper.resetPassword(member);
        System.out.println("i = " + i);
    }
+   @Test
+   public void test1(){
+       ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+      AddressService addressService = ctx.getBean(AddressService.class);
+       Address address = new Address();
+       address.setAddr("山东省滕州市");
+       address.setName("老王");
+       address.setTel("123321");
+       address.setMid(4);
+       int i = addressService.addAddr(address);
+       System.out.println("i = " + i);
+   }
+   @Test
+   public void test2(){
+       ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+       AddressService addressService = ctx.getBean(AddressService.class);
+       int i = addressService.delAddr(6);
+       System.out.println("i = " + i);
+   }
+   @Test
+   public void test3(){
+       ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+       AddressService addressService = ctx.getBean(AddressService.class);
+       int i = addressService.updateAddr(4, 4);
+       System.out.println("i = " + i);
+   }
+   @Test
+    public void test4(){
+       ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+       AddressService addressService = ctx.getBean(AddressService.class);
+       Address show = addressService.show(4);
+       System.out.println("show = " + show);
+   }
+   @Test
+   public void test5(){
+       ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+       AddressService addressService = ctx.getBean(AddressService.class);
+       List<Address> addresses = addressService.showAll(4);
+       System.out.println("addresses = " + addresses);
+    }
+    @Test
+    public void test6(){
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ProductService productService = ctx.getBean(ProductService.class);
+        //Product product = productService.gerById(2);
+       // System.out.println("product = " + product);
+        Set<Product> byBid = productService.search("萌心团子",2,2);
+        String s = JSON.toJSONString(byBid);
+        System.out.println("s = " + s);
+    }
 }
