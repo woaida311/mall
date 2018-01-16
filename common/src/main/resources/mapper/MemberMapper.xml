@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.hwua.common.dao.MemberMapper">
+    <!--注册时用来查询账号是否已经存在 登录时提示账户不存在-->
+    <select id="queryMemberName" parameterType="string" resultType="member">
+        SELECT * FROM shop_member WHERE name = #{name}
+    </select>
+    <!--注册时用来查询手机号是否已经存在 登录时提示账户不存在-->
+    <select id="queryTel" parameterType="string" resultType="member">
+        SELECT * FROM shop_member WHERE tel = #{tel}
+    </select>
+    <!--用户注册-->
+    <update id="register" parameterType="member">
+        INSERT INTO shop_member  (name, password, tel, email)
+        VALUES(#{name},#{password},#{tel},#{email})
+    </update>
+    <!--会员登录-->
+    <select id="doLogin" parameterType="map" resultType="member">
+        SELECT * FROM shop_member WHERE name = #{name} AND password = #{password}
+    </select>
+    <!--修改密码-->
+    <update id="resetPassword" parameterType="member">
+        UPDATE shop_member SET password = #{password} WHERE mid = #{mid} AND tel = #{tel}
+    </update>
+</mapper>

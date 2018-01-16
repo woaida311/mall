@@ -522,7 +522,7 @@
     </column>
     <column id="130" parent="20" name="price">
       <Position>6</Position>
-      <DataType>double|0</DataType>
+      <DataType>decimal(10,2)|0</DataType>
     </column>
     <column id="131" parent="20" name="stock">
       <Position>7</Position>

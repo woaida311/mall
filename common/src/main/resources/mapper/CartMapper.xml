@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.common.dao.CartMapper">
+    <resultMap id="cartMap" type="cart">
+        <id property="id" column="cid"/>
+        <result property="count" column="count"/>
+        <result property="money" column="money"/>
+        <association property="member" javaType="member">
+            <id property="mid" column="mid"/>
+            <result property="name" column="name"/>
+        </association>
+        <association property="product" javaType="product">
+            <id property="id" column="pid"/>
+            <result property="name" column="pname"/>
+            <result property="price" column="price"/>
+            <result property="comments" column="comments"/>
+            <result property="src_img" column="src_img"/>
+        </association>
+    </resultMap>
+    <select id="query" parameterType="int" resultMap="cartMap">
+        SELECT
+            shop_member_cart.id cid,
+            shop_member.mid mid,
+            shop_member.name mname,
+            shop_product.id pid,
+            shop_product.name pname,
+            count,
+            comments,
+            price,
+            src_img,
+            (count*price) money
+        FROM shop_member_cart
+            JOIN shop_member ON shop_member_cart.mid = shop_member.mid
+            JOIN shop_product ON shop_product.id = shop_member_cart.pid
+        WHERE shop_member_cart.mid = #{mid}
+    </select>
+    <!--用户添加商品之前先判断是否已经有同样的商品-->
+    <select id="getMemberCart" parameterType="map" resultType="cart">
+        SELECT * FROM shop_member_cart WHERE mid = #{mid} AND pid = #{pid}
+    </select>
+    <!--购物车中没有同样的商品-->
+    <insert id="addCart" parameterType="cart">
+        INSERT INTO shop_member_cart (mid, pid, count) VALUES (#{mid},#{pid},#{count})
+    </insert>
+    <!--购物车中有同类商品-->
+    <update id="update" parameterType="cart">
+        UPDATE shop_member_cart SET count = count+#{count} WHERE mid = #{mid} AND pid = #{pid}
+    </update>
+    <!--下单时，更新购物车信息-->
+    <update id="updateCart" parameterType="cart">
+        UPDATE shop_member_cart SET count = count-#{count} WHERE mid = #{mid} AND pid = #{pid}
+    </update>
+    <delete id="delCart" parameterType="int">
+        DELETE FROM shop_member_cart WHERE count = 0 AND mid = #{mid};
+    </delete>
+    <delete id="delAllCart" parameterType="int">
+        DELETE FROM shop_member_cart WHERE mid = #{mid}
+    </delete>
+</mapper>
